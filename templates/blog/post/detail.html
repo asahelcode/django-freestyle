@@ -5,5 +5,8 @@
 <p class="date">
 Published {{ post.publish }} by {{ post.author }}
 </p>
+<p>
+	{{ post.author__username }}
+</p>
 {{ post.body|linebreaks }}
 {% endblock %}

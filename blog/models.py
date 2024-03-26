@@ -1,17 +1,9 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 # Create your models here.
-
-class PublishedManager(models.Manager):
-	def get_queryset(self):
-		return super().get_queryset().filter(status=Post.Status.PUBLISHED)
-
-
-class DraftManager(models.Manager):
-	def get_queryset(self):
-		return super().get_queryset().filter(status=Post.Status.DRAFT)
 
 class Post(models.Model):
 
@@ -29,11 +21,12 @@ class Post(models.Model):
 	author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
 
 	objects = models.Manager()
-	published = PublishedManager()
-	draft = DraftManager()
-	
+
 	class Meta:
 		ordering = ['-publish'] # order in descending order
 
 	def __str__(self):
 		return self.title
+
+	def get_absolute_url(self):
+		return reverse('blog:detail', args=[self.pk])
